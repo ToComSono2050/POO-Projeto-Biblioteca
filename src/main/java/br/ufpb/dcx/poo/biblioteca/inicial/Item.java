@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Item {
 
-    private String codigo;
+    private final String codigo;
     private String titulo;
     private String autoria;
     private String categoria;

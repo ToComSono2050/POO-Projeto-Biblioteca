@@ -35,18 +35,34 @@ public class Item {
     }
 
     public String getCodigo() { return codigo; }
-
-
     public String getTitulo() { return titulo; }
-
-
     public String getAutoria() { return autoria; }
-
-
     public String getCategoria() { return categoria; }
-
-
     public int getAno() { return ano; }
+    public void atualizarTitulo(String novoTitulo) {
+        if (novoTitulo == null || novoTitulo.isBlank()) {
+            throw new IllegalArgumentException("Título obrigatório");
+        }
+        this.titulo = novoTitulo;
+    }
+    public void atualizarAutoria(String novaAutoria) {
+        if (novaAutoria == null || novaAutoria.isBlank()) {
+            throw new IllegalArgumentException("Autoria obrigatória");
+        }
+        this.autoria = novaAutoria;
+    }
+    public void atualizarCategoria(String novaCategoria) {
+        if (novaCategoria == null || novaCategoria.isBlank()) {
+            throw new IllegalArgumentException("Categoria obrigatória");
+        }
+        this.categoria = novaCategoria;
+    }
+    public void atualizarAno(int novoAno) {
+        if (novoAno <= 0) {
+            throw new IllegalArgumentException("Ano inválido");
+        }
+        this.ano = novoAno;
+    }
 
 
     public List<Exemplar> getExemplares() { return exemplares; }

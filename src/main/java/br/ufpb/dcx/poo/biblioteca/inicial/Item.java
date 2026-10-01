@@ -21,6 +21,12 @@ public class Item {
     private final List<Exemplar> exemplares = new ArrayList<>();
 
     public Item(String codigo, String titulo, String autoria, String categoria, int ano) {
+        if (codigo == null || codigo.isBlank()) {
+            throw new IllegalArgumentException("Código obrigatório");
+        }
+        if (titulo == null || titulo.isBlank()) {
+            throw new IllegalArgumentException("Título obrigatório");
+        }
         this.codigo = codigo;
         this.titulo = titulo;
         this.autoria = autoria;

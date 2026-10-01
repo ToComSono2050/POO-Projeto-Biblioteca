@@ -65,5 +65,7 @@ public class Item {
     }
 
 
-    public List<Exemplar> getExemplares() { return exemplares; }
+    public List<Exemplar> getExemplares() {
+        return new ArrayList<>(exemplares);
+    }
 }

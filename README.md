@@ -91,7 +91,8 @@ Sua equipe escolhe um acervo próprio: jogos, filmes, quadrinhos, instrumentos, 
 
 ### Nossa extensão
 
-> Substitua esta seção: qual acervo, qual regra de negócio própria, o que ela muda no comportamento do sistema.
+Nosso acervo é uma biblioteca.  
+>Regra de negócio autoral: a definir em breve
 
 ---
 

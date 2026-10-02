@@ -64,7 +64,6 @@ public class Item {
         this.ano = novoAno;
     }
 
-
     public List<Exemplar> getExemplares() {
         return new ArrayList<>(exemplares);
     }

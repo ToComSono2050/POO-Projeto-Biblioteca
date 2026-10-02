@@ -9,8 +9,8 @@ import br.ufpb.dcx.poo.biblioteca.contrato.StatusExemplar;
  */
 public class Exemplar {
 
-    private String tombo;
-    private Item item;
+    private final String tombo;
+    private final Item item;
     private StatusExemplar status;
 
     public Exemplar(String tombo, Item item) {
@@ -20,11 +20,38 @@ public class Exemplar {
     }
 
     public String getTombo() { return tombo; }
-    public void setTombo(String tombo) { this.tombo = tombo; }
-
     public Item getItem() { return item; }
-    public void setItem(Item item) { this.item = item; }
-
     public StatusExemplar getStatus() { return status; }
-    public void setStatus(StatusExemplar status) { this.status = status; }
+
+    public void emprestar() {
+        if (status != StatusExemplar.DISPONIVEL) {
+            throw new IllegalStateException("Exemplar não está disponível para empréstimo");
+        }
+        this.status = StatusExemplar.EMPRESTADO;
+    }
+
+    public void devolver() {
+        if (status != StatusExemplar.EMPRESTADO) {
+            throw new IllegalStateException("Exemplar não está emprestado");
+        }
+        this.status = StatusExemplar.DISPONIVEL;
+    }
+
+    public void reservar() {
+        if (status != StatusExemplar.DISPONIVEL) {
+            throw new IllegalStateException("Exemplar não pode ser reservado");
+        }
+        this.status = StatusExemplar.RESERVADO;
+    }
+
+    public void cancelarReserva() {
+        if (status != StatusExemplar.RESERVADO) {
+            throw new IllegalStateException("Exemplar não está reservado");
+        }
+        this.status = StatusExemplar.DISPONIVEL;
+    }
+
+    public void marcarComoIndisponivel() {
+        this.status = StatusExemplar.INDISPONIVEL;
+    }
 }

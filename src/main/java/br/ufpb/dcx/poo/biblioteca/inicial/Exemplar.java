@@ -9,8 +9,8 @@ import br.ufpb.dcx.poo.biblioteca.contrato.StatusExemplar;
  */
 public class Exemplar {
 
-    private String tombo;
-    private Item item;
+    private final String tombo;
+    private final Item item;
     private StatusExemplar status;
 
     public Exemplar(String tombo, Item item) {
@@ -20,11 +20,8 @@ public class Exemplar {
     }
 
     public String getTombo() { return tombo; }
-    public void setTombo(String tombo) { this.tombo = tombo; }
-
     public Item getItem() { return item; }
-    public void setItem(Item item) { this.item = item; }
-
     public StatusExemplar getStatus() { return status; }
+
     public void setStatus(StatusExemplar status) { this.status = status; }
 }

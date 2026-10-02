@@ -103,7 +103,7 @@ O uso é permitido como apoio, desde que declarado em [`DECLARACAO-DE-USO-DE-IA.
 
 ## Equipe
 
-| Nome                   | Matrícula   | GitHub       |
-|------------------------|-------------|--------------|
+| Nome                   | Matrícula   | GitHub        |
+|------------------------|-------------|---------------|
 | Kleyton Pedro da Cunha | 20250114188 | ToComSono2050 |
-| Samuel Lima Gomes      | 20240009760            |              |
+| Samuel Lima Gomes      | 20240009760            | samuka31      |

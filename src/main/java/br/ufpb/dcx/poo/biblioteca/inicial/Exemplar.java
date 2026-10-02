@@ -54,5 +54,4 @@ public class Exemplar {
     public void marcarComoIndisponivel() {
         this.status = StatusExemplar.INDISPONIVEL;
     }
-
 }

@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Item {
 
-    private String codigo;
+    private final String codigo;
     private String titulo;
     private String autoria;
     private String categoria;
@@ -21,6 +21,12 @@ public class Item {
     private final List<Exemplar> exemplares = new ArrayList<>();
 
     public Item(String codigo, String titulo, String autoria, String categoria, int ano) {
+        if (codigo == null || codigo.isBlank()) {
+            throw new IllegalArgumentException("Código obrigatório");
+        }
+        if (titulo == null || titulo.isBlank()) {
+            throw new IllegalArgumentException("Título obrigatório");
+        }
         this.codigo = codigo;
         this.titulo = titulo;
         this.autoria = autoria;
@@ -29,19 +35,37 @@ public class Item {
     }
 
     public String getCodigo() { return codigo; }
-    public void setCodigo(String codigo) { this.codigo = codigo; }
-
     public String getTitulo() { return titulo; }
-    public void setTitulo(String titulo) { this.titulo = titulo; }
-
     public String getAutoria() { return autoria; }
-    public void setAutoria(String autoria) { this.autoria = autoria; }
-
     public String getCategoria() { return categoria; }
-    public void setCategoria(String categoria) { this.categoria = categoria; }
-
     public int getAno() { return ano; }
-    public void setAno(int ano) { this.ano = ano; }
+    public void atualizarTitulo(String novoTitulo) {
+        if (novoTitulo == null || novoTitulo.isBlank()) {
+            throw new IllegalArgumentException("Título obrigatório");
+        }
+        this.titulo = novoTitulo;
+    }
+    public void atualizarAutoria(String novaAutoria) {
+        if (novaAutoria == null || novaAutoria.isBlank()) {
+            throw new IllegalArgumentException("Autoria obrigatória");
+        }
+        this.autoria = novaAutoria;
+    }
+    public void atualizarCategoria(String novaCategoria) {
+        if (novaCategoria == null || novaCategoria.isBlank()) {
+            throw new IllegalArgumentException("Categoria obrigatória");
+        }
+        this.categoria = novaCategoria;
+    }
+    public void atualizarAno(int novoAno) {
+        if (novoAno <= 0) {
+            throw new IllegalArgumentException("Ano inválido");
+        }
+        this.ano = novoAno;
+    }
 
-    public List<Exemplar> getExemplares() { return exemplares; }
+
+    public List<Exemplar> getExemplares() {
+        return new ArrayList<>(exemplares);
+    }
 }

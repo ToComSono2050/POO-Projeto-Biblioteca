@@ -96,6 +96,18 @@ Nosso acervo é uma biblioteca.
 
 ---
 
+## Relato do defeito
+
+No código inicial, `AcervoEmMemoria.localizar` comparava o código do item com `==`, que compara
+referências, e não com `equals`. Com literais no código de teste, as duas strings "L1" são o mesmo
+objeto e tudo funcionava; mas um código lido de arquivo ou digitado é outro objeto com o mesmo
+conteúdo, e o sistema deixava cadastrar código duplicado e não achava o item em `buscarItem`.
+Foi reproduzido cadastrando `new String("L1")` duas vezes (o segundo cadastro não lançava
+`RecursoDuplicadoException`) e encontrado ao ler `localizar`, que todos os outros métodos usam.
+O teste que prova o defeito está em `AcervoRegressaoTest` e foi commitado antes da correção.
+
+---
+
 ## Uso de ferramentas de IA
 
 O uso é permitido como apoio, desde que declarado em [`DECLARACAO-DE-USO-DE-IA.md`](DECLARACAO-DE-USO-DE-IA.md). Você continua responsável por explicar, testar e adaptar todo o código entregue — inclusive em uma alteração feita presencialmente, sem consulta, na defesa da Entrega 3.

@@ -1,7 +1,6 @@
 package br.ufpb.dcx.poo.biblioteca.inicial;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import br.ufpb.dcx.poo.biblioteca.contrato.UsuarioService;
 import br.ufpb.dcx.poo.biblioteca.contrato.UsuarioView;
@@ -10,17 +9,10 @@ import br.ufpb.dcx.poo.biblioteca.contrato.excecoes.OperacaoNaoPermitidaExceptio
 import br.ufpb.dcx.poo.biblioteca.contrato.excecoes.RecursoDuplicadoException;
 import br.ufpb.dcx.poo.biblioteca.contrato.excecoes.RecursoNaoEncontradoException;
 
-/**
- * Implementação inicial e parcial dos usuários.
- *
- * <p>Não existe classe de domínio para o usuário: os dados estão soltos em listas
- * paralelas. É proposital. Uma das primeiras decisões da Entrega 1 é definir se
- * isso deve continuar assim.</p>
- */
+
 public class UsuariosEmMemoria implements UsuarioService {
 
-    private final List<String> matriculas = new ArrayList<>();
-    private final List<String> nomes = new ArrayList<>();
+    private final Map<String, Usuario> usuarios = new HashMap<>();
 
     @Override
     public void cadastrarUsuario(String matricula, String nome)
@@ -32,27 +24,26 @@ public class UsuariosEmMemoria implements UsuarioService {
         if (nome == null || nome.isBlank()) {
             throw new DadosInvalidosException("O nome é obrigatório.");
         }
-        if (matriculas.contains(matricula)) {
+        if (usuarios.containsKey(matricula)) {
             throw new RecursoDuplicadoException("Já existe usuário com a matrícula " + matricula);
         }
-        matriculas.add(matricula);
-        nomes.add(nome);
+        usuarios.put(matricula, new Usuario(matricula, nome));
     }
 
     @Override
     public UsuarioView buscarUsuario(String matricula) throws RecursoNaoEncontradoException {
-        int posicao = matriculas.indexOf(matricula);
-        if (posicao < 0) {
+        Usuario usuario = usuarios.get(matricula);
+        if (usuario == null) {
             throw new RecursoNaoEncontradoException("Usuário não encontrado: " + matricula);
         }
-        return new UsuarioView(matriculas.get(posicao), nomes.get(posicao), true, 0);
+        return usuario.toView();
     }
 
     @Override
     public List<UsuarioView> listarUsuarios() {
         List<UsuarioView> resultado = new ArrayList<>();
-        for (int i = 0; i < matriculas.size(); i++) {
-            resultado.add(new UsuarioView(matriculas.get(i), nomes.get(i), true, 0));
+        for (Usuario usuario : usuarios.values()) {
+            resultado.add(usuario.toView());
         }
         resultado.sort((a, b) -> a.nome().compareToIgnoreCase(b.nome()));
         return resultado;
@@ -67,5 +58,19 @@ public class UsuariosEmMemoria implements UsuarioService {
     @Override
     public void reativarUsuario(String matricula) throws RecursoNaoEncontradoException {
         throw new UnsupportedOperationException("Entrega 2: implementar reativarUsuario");
+    }
+
+    private static class Usuario {
+        private final String matricula;
+        private final String nome;
+
+        Usuario(String matricula, String nome) {
+            this.matricula = matricula;
+            this.nome = nome;
+        }
+
+        UsuarioView toView() {
+            return new UsuarioView(matricula, nome, true, 0);
+        }
     }
 }

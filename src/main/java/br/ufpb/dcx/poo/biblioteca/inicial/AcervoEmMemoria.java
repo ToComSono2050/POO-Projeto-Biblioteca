@@ -95,6 +95,14 @@ public class AcervoEmMemoria implements AcervoService {
      *
      * <p>Este é o método que os outros usam para localizar um item.</p>
      */
+    /**
+     * Existe um erro nesse código
+     *
+     * <p>            if (item.getCodigo() == codigo) {
+     *                 return item;
+     *             }
+     *             aqui o uso de == está errado, ele vai comparar o objeto na memoria, equals é o ideal por comparar o CONTEÚDO do objeto.</p>
+     */
     private Item localizar(String codigo) {
         for (Item item : itens) {
             if (item.getCodigo() == codigo) {

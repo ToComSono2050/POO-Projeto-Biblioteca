@@ -32,7 +32,9 @@ Os 5 pulados são os testes marcados com `@Disabled`: eles cobrem o que você ai
   disponíveis, listar); a lista guarda a ordem de inserção e nunca é exposta, só cópias.
 - **Usuários: `Map<String, Usuario>` por matrícula.** Mesma razão do acervo: busca e unicidade
   por chave. As antigas listas paralelas de matrículas e nomes deram lugar à classe `Usuario`.
-
+- **Modelagem interna de usuário:**  
+  Para organizar melhor os dados e permitir futuras extensões (como status ativo/inativo ou número de reservas), criamos uma classe interna `Usuario` dentro de `UsuariosEmMemoria`.  
+  Essa classe não faz parte do contrato, mas facilita o encapsulamento e a conversão para `UsuarioView`.
 As chaves são `String`, então não foi preciso implementar `equals`/`hashCode` em classes nossas.
 
 ---

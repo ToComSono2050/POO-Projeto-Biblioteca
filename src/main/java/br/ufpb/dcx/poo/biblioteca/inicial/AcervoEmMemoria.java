@@ -105,7 +105,7 @@ public class AcervoEmMemoria implements AcervoService {
      */
     private Item localizar(String codigo) {
         for (Item item : itens) {
-            if (item.getCodigo() == codigo) {
+            if (item.getCodigo().equals(codigo)) {
                 return item;
             }
         }

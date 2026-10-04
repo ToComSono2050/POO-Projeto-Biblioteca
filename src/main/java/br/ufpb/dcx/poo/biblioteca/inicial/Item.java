@@ -63,7 +63,9 @@ public class Item {
         }
         this.ano = novoAno;
     }
-
+    public void adicionarExemplar(Exemplar exemplar) {
+        exemplares.add(exemplar);
+    }
 
     public List<Exemplar> getExemplares() {
         return new ArrayList<>(exemplares);

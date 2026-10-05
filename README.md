@@ -96,6 +96,30 @@ Nosso acervo é uma biblioteca.
 
 ---
 
+- **Itens: `Map<String, Item>` por código.** A operação predominante é buscar item por código
+  (`buscarItem`, a checagem de duplicidade em `cadastrarItem` e o localizar de
+  `adicionarExemplar`). Com `List` cada uma seria uma varredura completa; com `Map` é acesso direto.
+- **Tombos: `Map<String, Exemplar>` no acervo.** O tombo é único no acervo inteiro, então a
+  verificação precisa ser feita sem depender de qual item o exemplar pertence.
+- **Exemplares dentro do item: `List<Exemplar>`.** A operação é percorrer tudo (contar
+  disponíveis, listar); a lista guarda a ordem de inserção e nunca é exposta, só cópias.
+- **Usuários: `Map<String, Usuario>` por matrícula.** Mesma razão do acervo: busca e unicidade
+  por chave. As antigas listas paralelas de matrículas e nomes deram lugar à classe `Usuario`.
+
+---
+
+## Relato do defeito
+
+No código inicial, `AcervoEmMemoria.localizar` comparava o código do item com `==`, que compara
+referências, e não com `equals`. Com literais no código de teste, as duas strings "L1" são o mesmo
+objeto e tudo funcionava; mas um código lido de arquivo ou digitado é outro objeto com o mesmo
+conteúdo, e o sistema deixava cadastrar código duplicado e não achava o item em `buscarItem`.
+Foi reproduzido cadastrando `new String("L1")` duas vezes (o segundo cadastro não lançava
+`RecursoDuplicadoException`) e encontrado ao ler `localizar`, que todos os outros métodos usam.
+O teste que prova o defeito está em `AcervoRegressaoTest` e foi commitado antes da correção.
+
+---
+
 ## Uso de ferramentas de IA
 
 O uso é permitido como apoio, desde que declarado em [`DECLARACAO-DE-USO-DE-IA.md`](DECLARACAO-DE-USO-DE-IA.md). Você continua responsável por explicar, testar e adaptar todo o código entregue — inclusive em uma alteração feita presencialmente, sem consulta, na defesa da Entrega 3.

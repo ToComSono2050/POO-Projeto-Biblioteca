@@ -64,7 +64,15 @@ public class AcervoEmMemoria implements AcervoService {
 
     @Override
     public List<ItemView> buscarPorTitulo(String trecho) {
-        throw new UnsupportedOperationException("Entrega 1: implementar buscarPorTitulo");
+        exigirTextoPreenchido(trecho, "trecho");
+        List<ItemView> resultado = new ArrayList<>();
+        for (Item item : itens) {
+            if (item.getTitulo().toLowerCase().contains(trecho.toLowerCase())) {
+                resultado.add(paraView(item));
+            }
+        }
+        resultado.sort((a, b) -> a.titulo().compareToIgnoreCase(b.titulo()));
+        return resultado;
     }
 
     @Override
@@ -75,15 +83,45 @@ public class AcervoEmMemoria implements AcervoService {
     @Override
     public void adicionarExemplar(String codigoDoItem, String tombo)
             throws RecursoNaoEncontradoException, RecursoDuplicadoException {
-        throw new UnsupportedOperationException("Entrega 1: implementar adicionarExemplar");
+        exigirTextoPreenchido(tombo, "tombo");
+        Item item = localizar(codigoDoItem);
+        if (item == null) {
+            throw new RecursoNaoEncontradoException("Item não encontrado: " + codigoDoItem);
+        }
+        if (exemplarExiste(tombo)) {
+            throw new RecursoDuplicadoException("Já existe exemplar com tombo " + tombo);
+        }
+        item.adicionarExemplar(new Exemplar(tombo, item));
     }
 
     @Override
     public List<ExemplarView> listarExemplares(String codigoDoItem)
             throws RecursoNaoEncontradoException {
-        throw new UnsupportedOperationException("Entrega 1: implementar listarExemplares");
+        Item item = localizar(codigoDoItem);
+        if (item == null) {
+            throw new RecursoNaoEncontradoException("Item não encontrado: " + codigoDoItem);
+        }
+        List<ExemplarView> resultado = new ArrayList<>();
+        for (Exemplar exemplar : item.getExemplares()) {
+            resultado.add(new ExemplarView(
+                    exemplar.getTombo(),
+                    exemplar.getItem().getCodigo(),
+                    exemplar.getStatus()
+            ));
+        }
+        return resultado;
     }
 
+    private boolean exemplarExiste(String tombo) {
+        for (Item item : itens) {
+            for (Exemplar ex : item.getExemplares()) {
+                if (ex.getTombo().equals(tombo)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     @Override
     public void baixarExemplar(String tombo)
             throws RecursoNaoEncontradoException, OperacaoNaoPermitidaException {

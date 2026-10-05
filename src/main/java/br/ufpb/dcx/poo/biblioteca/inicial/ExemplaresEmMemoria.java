@@ -22,6 +22,9 @@ public class ExemplaresEmMemoria {
     public List<Exemplar> listarTodos() {
         return List.copyOf(exemplares.values()); // protege contra vazamento
     }
+        public boolean existeTombo(String tombo) {
+        return exemplares.containsKey(tombo);
+    }
     public void adicionarExemplarAoItem(Item item, String tombo) throws OperacaoNaoPermitidaException {
         Exemplar novo = new Exemplar(tombo, item);
         cadastrarExemplar(novo);

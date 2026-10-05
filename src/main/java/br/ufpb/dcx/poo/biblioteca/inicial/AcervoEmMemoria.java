@@ -176,11 +176,9 @@ import br.ufpb.dcx.poo.biblioteca.contrato.excecoes.RecursoNaoEncontradoExceptio
     /** Acesso interno usado pelos demais serviços da implementação inicial. */
    // List<Item> itens() {
     //    return itens;
-    }
-}
-*/
 
-    package br.ufpb.dcx.poo.biblioteca.inicial;
+
+package br.ufpb.dcx.poo.biblioteca.inicial;
 
 import java.util.ArrayList;
 import java.util.List;

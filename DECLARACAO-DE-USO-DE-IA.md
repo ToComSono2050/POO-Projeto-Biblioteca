@@ -20,7 +20,7 @@ Uma linha por uso relevante. Se não houve uso, escreva "Não houve uso de ferra
 
 | Data | Ferramenta | Finalidade | Arquivos/trechos afetados | O que foi revisado e alterado por vocês |
 |---|---|---|---|---|
-| | | | | |
+| | |descobrir um erro |acervo em memoria |adicionar exemplar |
 
 ## Compromisso
 

@@ -9,9 +9,10 @@ sim.
 
 ## Equipe
 
-| Nome | Matrícula |
-|---|---|
-| | |
+| Nome                   | Matrícula   | GitHub        |
+|------------------------|-------------|---------------|
+| Kleyton Pedro da Cunha | 20250114188 | ToComSono2050 |
+| Samuel Lima Gomes      | 20240009760            | samuka31      |
 
 ## Uso declarado
 

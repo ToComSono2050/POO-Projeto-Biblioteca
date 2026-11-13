@@ -110,7 +110,7 @@ Sua equipe escolhe um acervo próprio: jogos, filmes, quadrinhos, instrumentos, 
 ### Nossa extensão
 
 Nosso acervo é uma biblioteca.  
->Regra de negócio autoral: a definir em breve
+>Regra de negócio autoral: haverá multa por atraso. ainda estamos desenvolvendo outras coisas.
 
 ---
 

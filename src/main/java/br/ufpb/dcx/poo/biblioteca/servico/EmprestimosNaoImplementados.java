@@ -1,4 +1,4 @@
-package br.ufpb.dcx.poo.biblioteca.inicial;
+package br.ufpb.dcx.poo.biblioteca.servico;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,7 +25,7 @@ public class EmprestimosNaoImplementados implements EmprestimoService {
     @Override
     public String emprestar(String tombo, String matricula, LocalDate data)
             throws RecursoNaoEncontradoException, ExemplarIndisponivelException,
-                   UsuarioInativoException, LimiteDeEmprestimosExcedidoException {
+            UsuarioInativoException, LimiteDeEmprestimosExcedidoException {
         throw new UnsupportedOperationException("Entrega 2: implementar emprestar");
     }
 

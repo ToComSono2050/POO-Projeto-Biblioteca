@@ -22,14 +22,22 @@ Uma linha por uso relevante. Se não houve uso, escreva "Não houve uso de ferra
 |---|---|---|---|---|
 | | |descobrir um erro |acervo em memoria |adicionar exemplar |
 
-## Compromisso
 
-Ao entregar, a equipe declara que:
+## Ferramentas usadas
+- Claude (Anthropic), em conversas de chat.
 
-- entende cada trecho do código entregue e consegue explicá-lo oralmente;
-- testou o que foi gerado, e não apenas verificou que compila;
+## Para que foi usado
+- Gerar o código das classes de domínio, dos serviços, da persistência e da extensão (multa por atraso) da Entrega 2, a partir do enunciado e do guia.
+- Escrever a suíte de testes JUnit, o `docs/decisoes.md`, o `docs/modelo.puml` e o texto do README.
+- Explicar mensagens de erro e orientar o passo a passo de Git e IntelliJ.
+- havia me perdido entre os códigos e não tive tanta alternativa. 
+
+## O que a equipe fez para conferir
+- Rodamos `mvn -B verify` localmente e acompanhou o GitHub Actions a cada PR.
+- 
+
+## O que a equipe mudou em relação ao que a IA sugeriu
+- [colocamos nossa propria regra de negócio e outras coisas, como diminuir linhas de códigos desnecessárias para limpar o código]
 - adaptou o que foi gerado ao contrato e às decisões de design do projeto;
-- está ciente de que cada integrante fará uma alteração individual em sala, sem consulta,
-  na defesa da Entrega 3.
+- está ciente de que cada integrante fará uma alteração individual em sala.
 
-Assinaturas (nome e data):

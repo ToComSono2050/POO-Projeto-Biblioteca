@@ -1,42 +1,153 @@
 @startuml
+' Modelo de domínio da Entrega 2. Corresponde ao código em
+' src/main/java/br/ufpb/dcx/poo/biblioteca/{dominio,servico,persistencia}.
 skinparam classAttributeIconSize 0
 hide empty members
 
-class Item {
-  - codigo : String
-  - titulo : String
-  - autoria : String
-  - categoria : String
-  - ano : int
+package contrato <<Frozen>> {
+  interface Biblioteca
+  interface AcervoService
+  interface UsuarioService
+  interface EmprestimoService
+  enum StatusExemplar {
+    DISPONIVEL
+    EMPRESTADO
+    RESERVADO
+    INDISPONIVEL
+  }
 }
 
-class Exemplar {
-  - tombo : String
-  - status : StatusExemplar
+package dominio {
+  class Item {
+    - codigo : String {readOnly}
+    - titulo : String {readOnly}
+    - autoria : String
+    - categoria : String
+    - ano : int
+    + adicionarExemplar(exemplar : Exemplar)
+    + exemplaresDisponiveis() : int
+    + destinarExemplarLivre(exemplar : Exemplar)
+    + paraView() : ItemView
+  }
+
+  class Exemplar {
+    - tombo : String {readOnly}
+    - codigoDoItem : String {readOnly}
+    - status : StatusExemplar
+    + podeSerEmprestadoPara(usuario : Usuario) : boolean
+    + emprestar()
+    + devolver()
+    + baixar()
+    + paraView() : ExemplarView
+  }
+
+  class FilaDeReservas {
+    - reservas : List<Reserva>
+    + entrar(reserva : Reserva)
+    + remover(reserva : Reserva)
+    + ativas() : List<Reserva>
+    + primeiraSemExemplar() : Optional<Reserva>
+    + temReservaDe(usuario : Usuario) : boolean
+  }
+
+  class Reserva {
+    - id : String {readOnly}
+    - codigoDoItem : String {readOnly}
+    - dataDaReserva : LocalDate {readOnly}
+    + separar(exemplar : Exemplar)
+    + liberarExemplar() : Exemplar
+  }
+
+  class Usuario {
+    - matricula : String {readOnly}
+    - nome : String {readOnly}
+    - ativo : boolean
+    + emprestimosAtivos() : int
+    + desativar()
+    + reativar()
+    + paraView() : UsuarioView
+  }
+
+  class Emprestimo {
+    - id : String {readOnly}
+    - dataDoEmprestimo : LocalDate {readOnly}
+    - dataPrevistaDeDevolucao : LocalDate {readOnly}
+    - dataDaDevolucao : LocalDate
+    + estaAtivo() : boolean
+    + estaAtrasadoEm(data : LocalDate) : boolean
+    + registrarDevolucao(data : LocalDate)
+  }
 }
 
-class Usuario {
-  - matricula : String
-  - nome : String
-  - ativo : boolean
+package servico {
+  class BibliotecaDaEquipe <<Facade>>
+  class AcervoEmMemoria
+  class UsuariosEmMemoria
+  class EmprestimosEmMemoria
+  class RegistroDaBiblioteca {
+    - itens : Map<String, Item>
+    - exemplares : Map<String, Exemplar>
+    - usuarios : Map<String, Usuario>
+    - emprestimos : List<Emprestimo>
+    - emprestimosAtivosPorTombo : Map<String, Emprestimo>
+    - reservasAtivas : Map<String, Reserva>
+  }
+  class PersistenciaDaBiblioteca
+}
+
+package extensao {
+  class ServicoDeMultas {
+    + VALOR_POR_DIA_PADRAO : BigDecimal
+    + multasDoUsuario(matricula : String, data : LocalDate) : List<Multa>
+    + totalDoUsuario(matricula : String, data : LocalDate) : BigDecimal
+    + usuariosComMulta(data : LocalDate) : Map<String, BigDecimal>
+  }
+  class Multa <<record>> {
+    idDoEmprestimo : String
+    tombo : String
+    diasDeAtraso : long
+    valor : BigDecimal
+  }
+}
+
+package persistencia {
+  class ArquivoDeTabela
+  class DiretorioDeDados
+  class FalhaDePersistencia
 }
 
 Item "1" *-- "0..*" Exemplar : possui
-Usuario "1" o-- "0..*" Exemplar : empresta
+Item "1" *-- "1" FilaDeReservas : tem
+FilaDeReservas "1" o-- "0..*" Reserva : enfileira
+Reserva "0..1" -- "0..1" Exemplar : separa
+Reserva "0..*" -- "1" Usuario : feita por
+Exemplar "1" -- "0..*" Emprestimo : histórico de
+Usuario "1" o-- "0..*" Emprestimo : solicitou
+Exemplar --> StatusExemplar
 
-note bottom of Item
-  O código é identidade imutável.
-  Atributos como título e ano podem ser corrigidos.
+BibliotecaDaEquipe ..|> Biblioteca
+AcervoEmMemoria ..|> AcervoService
+UsuariosEmMemoria ..|> UsuarioService
+EmprestimosEmMemoria ..|> EmprestimoService
+BibliotecaDaEquipe *-- RegistroDaBiblioteca
+BibliotecaDaEquipe *-- AcervoEmMemoria
+BibliotecaDaEquipe *-- UsuariosEmMemoria
+BibliotecaDaEquipe *-- EmprestimosEmMemoria
+AcervoEmMemoria --> RegistroDaBiblioteca
+UsuariosEmMemoria --> RegistroDaBiblioteca
+EmprestimosEmMemoria --> RegistroDaBiblioteca
+RegistroDaBiblioteca o-- "0..*" Item
+RegistroDaBiblioteca o-- "0..*" Usuario
+RegistroDaBiblioteca o-- "0..*" Emprestimo
+BibliotecaDaEquipe ..> PersistenciaDaBiblioteca : salvar / carregar
+ServicoDeMultas ..> Biblioteca : lê só pela Facade
+ServicoDeMultas ..> Multa : cria
+PersistenciaDaBiblioteca --> ArquivoDeTabela
+PersistenciaDaBiblioteca ..> DiretorioDeDados
+
+note bottom of Reserva
+  O exemplar RESERVADO sabe a qual
+  reserva pertence (Exemplar.reservaDona),
+  e a reserva sabe qual exemplar guarda.
 end note
-
-note bottom of Exemplar
-  Tombo e vínculo com Item são imutáveis.
-  Status muda via métodos de negócio.
-end note
-
-note bottom of Usuario
-  Matrícula é identidade imutável.
-  Nome e status podem ser atualizados de forma controlada.
-end note
-
 @enduml

@@ -52,15 +52,21 @@ class UsuariosEmMemoria implements UsuarioService {
         return resultado;
     }
 
+    /**
+     * Desativa o usuário. Desativar quem já está inativo não muda nada.
+     *
+     * @throws OperacaoNaoPermitidaException se o usuário tiver empréstimo ativo
+     */
     @Override
     public void desativarUsuario(String matricula)
             throws RecursoNaoEncontradoException, OperacaoNaoPermitidaException {
-        throw new UnsupportedOperationException("Entrega 2: implementar desativarUsuario");
+        registro.exigirUsuario(matricula).desativar();
     }
 
+    /** Reativa o usuário. Idempotente. */
     @Override
     public void reativarUsuario(String matricula) throws RecursoNaoEncontradoException {
-        throw new UnsupportedOperationException("Entrega 2: implementar reativarUsuario");
+        registro.exigirUsuario(matricula).reativar();
     }
 
 }

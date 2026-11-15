@@ -8,15 +8,17 @@ import br.ufpb.dcx.poo.biblioteca.contrato.UsuarioService;
 import br.ufpb.dcx.poo.biblioteca.contrato.excecoes.PersistenciaException;
 
 /**
- * A Facade do sistema: a porta única por onde o resto do mundo fala com o domínio.
- * Quem está fora só enxerga as interfaces do contrato e as visões.
+ * A Facade do sistema: a porta única por onde o resto do mundo (os testes de correção
+ * agora, a interface gráfica na Entrega 3) fala com o domínio. Quem está fora só enxerga
+ * as interfaces do contrato e as visões; nunca um {@code Item}, uma coleção ou um arquivo.
+
  */
 public class BibliotecaDaEquipe implements Biblioteca {
 
     private final RegistroDaBiblioteca registro = new RegistroDaBiblioteca();
     private final AcervoEmMemoria acervo = new AcervoEmMemoria(registro);
     private final UsuariosEmMemoria usuarios = new UsuariosEmMemoria(registro);
-    private final EmprestimosNaoImplementados emprestimos = new EmprestimosNaoImplementados();
+    private final EmprestimosEmMemoria emprestimos = new EmprestimosEmMemoria(registro);
     private final RelatoriosNaoImplementados relatorios = new RelatoriosNaoImplementados();
 
     @Override

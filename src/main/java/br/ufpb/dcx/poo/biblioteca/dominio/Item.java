@@ -2,6 +2,7 @@ package br.ufpb.dcx.poo.biblioteca.dominio;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import br.ufpb.dcx.poo.biblioteca.contrato.ItemView;
 
@@ -9,8 +10,8 @@ import br.ufpb.dcx.poo.biblioteca.contrato.ItemView;
  * Um item do acervo: um livro, um filme, um jogo, um instrumento.
  *
  * <p>O código identifica o item e nunca muda. O item se recusa a nascer sem código ou
- * sem título e conta os próprios exemplares. A lista interna de exemplares nunca é
- * exposta: só cópias.</p>
+ * sem título, conta os próprios exemplares e, como é ele quem tem exemplares e fila,
+ * decide para onde vai um exemplar que acaba de ficar livre.</p>
  */
 public final class Item {
 
@@ -20,6 +21,7 @@ public final class Item {
     private final String categoria;
     private final int ano;
     private final List<Exemplar> exemplares = new ArrayList<>();
+    private final FilaDeReservas fila = new FilaDeReservas();
 
     /**
      * @throws br.ufpb.dcx.poo.biblioteca.contrato.excecoes.DadosInvalidosException
@@ -51,6 +53,10 @@ public final class Item {
 
     public int getAno() {
         return ano;
+    }
+
+    public FilaDeReservas getFila() {
+        return fila;
     }
 
     /** Liga o exemplar a este item. A unicidade do tombo é garantida pelo acervo. */
@@ -86,5 +92,24 @@ public final class Item {
     /** Verdadeiro se o título contém o trecho, ignorando maiúsculas e minúsculas. */
     public boolean tituloContem(String trecho) {
         return titulo.toLowerCase().contains(trecho.toLowerCase());
+    }
+
+    /** Verdadeiro se a categoria é igual à informada, ignorando maiúsculas e minúsculas. */
+    public boolean temCategoria(String outra) {
+        return categoria != null && categoria.equalsIgnoreCase(outra);
+    }
+
+    /**
+     * Decide o destino de um exemplar que acabou de ficar livre (devolvido ou solto por
+     * uma reserva cancelada): vai para a reserva mais antiga ainda sem exemplar; se não
+     * houver, volta a ficar disponível.
+     */
+    public void destinarExemplarLivre(Exemplar exemplar) {
+        Optional<Reserva> proxima = fila.primeiraSemExemplar();
+        if (proxima.isPresent()) {
+            proxima.get().separar(exemplar);
+        } else {
+            exemplar.devolver();
+        }
     }
 }

@@ -14,3 +14,5 @@ Thumbs.db
 # Dados gerados em execução
 dados/*.dat
 dados/biblioteca.*
+dados/*
+!dados/itens-exemplo.csv

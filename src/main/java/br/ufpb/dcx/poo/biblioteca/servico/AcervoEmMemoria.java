@@ -62,9 +62,11 @@ class AcervoEmMemoria implements AcervoService {
         return filtrar(item -> item.tituloContem(trecho));
     }
 
+    /** Itens da categoria, sem distinguir maiúsculas, ordenados por título. */
     @Override
     public List<ItemView> buscarPorCategoria(String categoria) {
-        throw new UnsupportedOperationException("Entrega 2: implementar buscarPorCategoria");
+        Validacao.exigirTexto(categoria, "categoria");
+        return filtrar(item -> item.temCategoria(categoria));
     }
 
     /**
@@ -101,10 +103,16 @@ class AcervoEmMemoria implements AcervoService {
         return resultado;
     }
 
+    /**
+     * Tira o exemplar de circulação: continua listado e contado no total, mas deixa de
+     * contar como disponível.
+     *
+     * @throws OperacaoNaoPermitidaException se estiver emprestado ou já baixado
+     */
     @Override
     public void baixarExemplar(String tombo)
             throws RecursoNaoEncontradoException, OperacaoNaoPermitidaException {
-        throw new UnsupportedOperationException("Entrega 2: implementar baixarExemplar");
+        registro.exigirExemplar(tombo).baixar();
     }
 
     private List<ItemView> filtrar(Predicate<Item> criterio) {

@@ -1,4 +1,4 @@
-package br.ufpb.dcx.poo.biblioteca.inicial;
+package br.ufpb.dcx.poo.biblioteca.servico;
 
 import br.ufpb.dcx.poo.biblioteca.contrato.AcervoService;
 import br.ufpb.dcx.poo.biblioteca.contrato.Biblioteca;
@@ -8,29 +8,36 @@ import br.ufpb.dcx.poo.biblioteca.contrato.UsuarioService;
 import br.ufpb.dcx.poo.biblioteca.contrato.excecoes.PersistenciaException;
 
 /**
- * Reúne os quatro serviços em um único ponto de acesso.
- *
- * <p>Guarde esta classe na memória: na Aula 13 você vai descobrir que ela tem nome
- * e que a decisão de existir ou não tem consequências.</p>
+ * A Facade do sistema: a porta única por onde o resto do mundo fala com o domínio.
+ * Quem está fora só enxerga as interfaces do contrato e as visões.
  */
-public class BibliotecaInicial implements Biblioteca {
+public class BibliotecaDaEquipe implements Biblioteca {
 
-    private final AcervoEmMemoria acervo = new AcervoEmMemoria();
-    private final UsuariosEmMemoria usuarios = new UsuariosEmMemoria();
+    private final RegistroDaBiblioteca registro = new RegistroDaBiblioteca();
+    private final AcervoEmMemoria acervo = new AcervoEmMemoria(registro);
+    private final UsuariosEmMemoria usuarios = new UsuariosEmMemoria(registro);
     private final EmprestimosNaoImplementados emprestimos = new EmprestimosNaoImplementados();
     private final RelatoriosNaoImplementados relatorios = new RelatoriosNaoImplementados();
 
     @Override
-    public AcervoService acervo() { return acervo; }
+    public AcervoService acervo() {
+        return acervo;
+    }
 
     @Override
-    public UsuarioService usuarios() { return usuarios; }
+    public UsuarioService usuarios() {
+        return usuarios;
+    }
 
     @Override
-    public EmprestimoService emprestimos() { return emprestimos; }
+    public EmprestimoService emprestimos() {
+        return emprestimos;
+    }
 
     @Override
-    public RelatorioService relatorios() { return relatorios; }
+    public RelatorioService relatorios() {
+        return relatorios;
+    }
 
     @Override
     public void salvar() throws PersistenciaException {

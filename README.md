@@ -60,7 +60,7 @@ As chaves são `String`, então não foi preciso implementar `equals`/`hashCode`
 
 ## Relato do defeito
 
-[Ajustem ao que realmente aconteceu.] No código inicial, `AcervoEmMemoria.localizar` comparava o
+[houve alguns bugs no meio do caminho, mas foram corrigidos.] No código inicial, `AcervoEmMemoria.localizar` comparava o
 código do item com `==`, que compara referências, e não com `equals`. Com literais no código de
 teste, as duas strings "L1" são o mesmo objeto e tudo funcionava; mas um código lido de arquivo ou
 digitado é outro objeto com o mesmo conteúdo, e o sistema deixava cadastrar código duplicado e não
